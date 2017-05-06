@@ -1,0 +1,65 @@
+    Change the Status of the ECN Nonce (RFC 3540) to Historic
+
+Receiving hosts can fool a sender into downloading faster by suppressing
+feedback of ECN marks or losses. The ECN Nonce (RFC 3540) was proposed
+to allow a TCP sender to ensure the integrity of congestion feedback,
+thus detecting this attack.
+
+If the TCP receiver opts in, and the server supports it, the ECN Nonce
+works as specified. However, since RFC 3540 was published in Jun 2003,
+widespread usage in the Internet has not materialized. A study of the
+ECN behaviour of the Alexa top 1M web servers using 2014 data
+[Trammell15] found that after ECN was negotiated, none of the 581,711
+IPv4 servers tested were using both the ECT(1) and the ECT(0)
+codepoints, which would have been evidence of ECN Nonce usage. Of the
+17,028 IPv6 servers tested, 4 set both ECT(0) and ECT(1) on data
+packets. This might have been evidence of use of the ECN Nonce by these
+4 servers, but might equally have been due to re- marking of the ECN
+field by an erroneous middlebox or router.
+
+The ECN Nonce would be nearly impossible to deploy now, because any
+misbehaving receiver can simply opt-out, which would be unremarkable
+given all receivers currently opt-out.
+
+RFC 3540 consumes a 2-bit codepoint of the ECN field in the IPv4 and
+IPv6 headers. It also consumes a TCP flag bit in the main TCP header. If
+the capability provided by the ECN Nonce is required in future, other
+approaches have been developed that do not consume space in the IP or
+TCP headers (see Appendix C.1 of [I-D.ietf-tsvwg-ecn-l4s-id]).
+
+By parking on these codepoints, RFC 3540 is standing in the way of new
+experimental capabilities that depend on the use of these codepoints
+for other purposes. Continuing to reserve these codepoints for the ECN
+Nonce experiment is no longer justified.
+
+[I-D.ietf-tsvwg-ecn-experimentation] makes the procedural arrangements
+for reclassification of RFC 3540 as historic: 
+   * It updates the wording of RFCs 3168, 6679, 4341, 4342, 5622, which
+     all specified optional aspects of their respective protocols that
+     were dependent on RFC 3540 (no evidence has been found that these
+     protocol options have been implemented or deployed).
+   * It requests that IANA modifies its registries to record the
+     availability of the ECT(1) codepoint in the IP (v4 and v6)
+     headers and the NS flag in the main TCP header.
+
+References.
+
+   [Trammell15]
+              Trammell, B., Kuehlewind, M., Boppart, D., Learmonth, I.,
+              Fairhurst, G., and R. Scheffenegger, "Enabling Internet-
+              Wide Deployment of Explicit Congestion Notification".
+              In Proc Passive & Active Measurement (PAM'15) Conference
+              (2015)
+
+   [I-D.ietf-tsvwg-ecn-l4s-id] 
+              Schepper, K., Briscoe, B., and I. Tsang, "Identifying
+              Modified Explicit Congestion Notification (ECN) Semantics
+              for Ultra-Low Queuing Delay", draft-ietf-tsvwg-ecn-l4s-
+              id-00 (work in progress), April 2017.
+
+   [I-D.ietf-tsvwg-ecn-experimentation]
+              Black, D., "Explicit Congestion Notification (ECN)
+              Experimentation", draft-ietf-tsvwg-ecn-experimentation-02
+              (work in progress), April 2017.
+
+
